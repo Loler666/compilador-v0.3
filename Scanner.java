@@ -35,6 +35,7 @@ public class Scanner {
     public List<Token> scan() throws Exception {
         int estado = 0;
         String lexema = "";
+        String literal = "";
         char c;
 
         for(int i=0; i<source.length(); i++){
@@ -59,7 +60,11 @@ public class Scanner {
                         lexema = "";
                         estado = 0;
                         tokens.add(t);
-                        */
+                        */      
+                    }
+                    else if(c=='\"'){
+                        estado = 24;
+                        lexema += c;
                     }
                     else if(c=='.'){
                         
@@ -181,6 +186,22 @@ public class Scanner {
                         estado = 0;
                         lexema = "";
                         i--;
+                    }
+                    break;
+                case 24:
+                    if(c == '\"'){
+                        Token t = new Token(TipoToken.STRING, lexema, lexema.replace('\"',' ').trim(););
+                        tokens.add(t);
+                        estado = 0;
+                        lexema = "";
+                        i--;
+
+                    }else if(c == '\n'){
+                        System.out.println("Error");
+                    }
+                    else{
+                        lexema+=c;
+                        estado=24;
                     }
                     break;                
             }
